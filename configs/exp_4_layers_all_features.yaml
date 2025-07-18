@@ -1,0 +1,24 @@
+# configs/exp_4_layers_all_features.yaml
+# Konfigurasi untuk eksperimen dengan 4 hidden layer, menggunakan semua fitur.
+
+# --- Pengaturan Data ---
+data:
+  file_path: 'data/raw/HIGGS.csv'
+  feature_set: 'all' # Pilihan: all, raw, only
+
+# --- Pengaturan Model ---
+model:
+  name: 'higgs_4_layer_all_features' # Nama untuk menyimpan model
+  layers: 4 # Jumlah hidden layer
+  neurons: 300 # Jumlah neuron di setiap hidden layer
+  activation: 'relu' # Fungsi aktivasi untuk hidden layer
+  input_shape_factor: 28 # Jumlah fitur input (28 untuk 'all', 21 untuk 'raw', 7 untuk 'only')
+
+# --- Pengaturan Pelatihan ---
+training:
+  optimizer: 'adam'
+  loss: 'binary_crossentropy'
+  epochs: 100 # Jumlah maksimum epoch
+  batch_size: 1024 # Ukuran batch, bisa disesuaikan dengan VRAM GPU Anda
+  early_stopping_patience: 10 # Berhenti jika tidak ada peningkatan setelah 10 epoch
+

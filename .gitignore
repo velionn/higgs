@@ -1,0 +1,37 @@
+# .gitignore
+
+# Abaikan folder Virtual Environment Python
+# Folder ini spesifik untuk setiap mesin dan harus dibuat ulang
+venv/
+/venv/
+
+# Abaikan file data mentah dan yang sudah diproses
+# JANGAN PERNAH mengunggah file data besar ke Git
+data/
+/data/
+
+# Abaikan model yang sudah dilatih
+# Ini adalah artefak, bukan kode sumber, dan ukurannya besar
+models/
+/models/
+
+# Abaikan hasil eksperimen (plot, metrik, dll.)
+results/
+/results/
+
+# Abaikan cache dan file terkompilasi Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Abaikan file spesifik sistem operasi
+.DS_Store
+Thumbs.db
+
+# Abaikan file log
+*.log
+
+# Abaikan file konfigurasi editor/IDE
+.vscode/
+.idea/
