@@ -1,100 +1,94 @@
-# evaluate.py
-
+import yaml
 import argparse
-import json
 from pathlib import Path
-import tensorflow as tf
+import torch
+import torch.nn as nn
+import json
+from torchmetrics.classification import BinaryAUROC, BinaryAccuracy
+from src.data_loader import get_dataloaders
+from src.model_builder import HiggsNet
 
-# Impor pemuat data kita dari folder src
-from src.data_loader import load_higgs_data
+def evaluate_model(config_path: Path):
+    # --- 1. Memuat Konfigurasi & Menentukan Perangkat ---
+    print(f"Memuat konfigurasi dari: {config_path}")
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
 
-def evaluate_model(model_path: Path, feature_set: str):
-    """
-    Fungsi untuk mengevaluasi model yang sudah dilatih pada test set.
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Menggunakan perangkat: {device}")
 
-    Args:
-        model_path (Path): Path menuju file model .keras yang sudah disimpan.
-        feature_set (str): Set fitur yang digunakan saat melatih model
-                           ('all', 'raw', atau 'only').
-    """
-    if not model_path.exists():
-        print(f"Error: File model tidak ditemukan di {model_path}")
+    # --- 2. Memuat Data Uji ---
+    _, _, test_loader = get_dataloaders(config)
+
+    # --- 3. Membangun Ulang Model dan Memuat Bobot (Weights) ---
+    model_config = config['model']
+    
+    # Buat instance model dengan arsitektur yang sama
+    model = HiggsNet(
+        input_size=model_config['input_shape_factor'],
+        hidden_layers=model_config['layers'],
+        hidden_neurons=model_config['neurons']
+    ).to(device)
+
+    # Tentukan path ke model yang disimpan
+    model_save_path = Path('models') / f"{model_config['name']}_best.pt"
+    if not model_save_path.exists():
+        print(f"Error: File model tidak ditemukan di {model_save_path}")
         return
 
-    print(f"Mengevaluasi model: {model_path.name}")
-    print(f"Menggunakan set fitur: '{feature_set}'")
-
-    # --- 1. Memuat Data Uji ---
-    # Kita hanya memerlukan X_test dan y_test, jadi kita abaikan sisanya
-    # dengan menggunakan underscore (_)
-    data_file = Path('data/raw/HIGGS.csv')
-    _, _, _, _, X_test, y_test = load_higgs_data(
-        file_path=data_file,
-        feature_set=feature_set
-    )
-    print("Data uji berhasil dimuat.")
-
-    # --- 2. Memuat Model yang Sudah Dilatih ---
-    print("Memuat model...")
-    try:
-        model = tf.keras.models.load_model(model_path)
-    except Exception as e:
-        print(f"Error saat memuat model: {e}")
-        return
+    print(f"Memuat bobot model dari: {model_save_path}")
+    model.load_state_dict(torch.load(model_save_path, map_location=device))
     
-    print("Model berhasil dimuat.")
-
-    # --- 3. Mengevaluasi Model pada Data Uji ---
-    print("Memulai evaluasi pada test set...")
-    # model.evaluate() akan mengembalikan nilai loss dan metrik
-    # yang kita definisikan saat kompilasi (loss, auc, accuracy)
-    results = model.evaluate(X_test, y_test, verbose=1)
+    # --- 4. Mengevaluasi Model ---
+    criterion = nn.BCEWithLogitsLoss()
+    auc_metric = BinaryAUROC().to(device)
+    acc_metric = BinaryAccuracy().to(device)
     
-    # Membuat dictionary yang rapi untuk hasil
+    model.eval() # Set model ke mode evaluasi
+    test_loss = 0.0
+    
+    with torch.no_grad(): # Tidak perlu menghitung gradien saat evaluasi
+        for features, labels in test_loader:
+            features, labels = features.to(device), labels.to(device)
+            
+            outputs = model(features)
+            loss = criterion(outputs, labels)
+            test_loss += loss.item()
+            
+            # Update metrik
+            auc_metric.update(outputs, labels.int())
+            acc_metric.update(outputs, labels.int())
+
+    avg_test_loss = test_loss / len(test_loader)
+    test_auc = auc_metric.compute().item()
+    test_acc = acc_metric.compute().item()
+
     metrics = {
-        'loss': results[0],
-        'auc': results[1],
-        'accuracy': results[2]
+        'loss': avg_test_loss,
+        'auc': test_auc,
+        'accuracy': test_acc
     }
-    
-    print("\n--- Hasil Evaluasi Akhir ---")
+
+    print("\n--- Hasil Evaluasi Akhir pada Test Set ---")
     print(f"  Loss: {metrics['loss']:.4f}")
     print(f"  Accuracy: {metrics['accuracy']:.4f}")
     print(f"  AUC (Area Under Curve): {metrics['auc']:.4f}")
-    print("----------------------------")
+    print("-----------------------------------------")
 
-    # --- 4. Menyimpan Hasil ---
-    # Membuat folder results/metrics jika belum ada
+    # --- 5. Menyimpan Hasil ---
     results_dir = Path('results/metrics')
     results_dir.mkdir(parents=True, exist_ok=True)
     
-    # Nama file hasil akan sama dengan nama model, tetapi dengan ekstensi .json
-    results_file_path = results_dir / f"{model_path.stem}.json"
+    results_file_path = results_dir / f"{model_config['name']}.json"
     
     with open(results_file_path, 'w') as f:
         json.dump(metrics, f, indent=4)
         
     print(f"Hasil evaluasi telah disimpan di: {results_file_path}")
 
-
 if __name__ == '__main__':
-    # Menyiapkan parser untuk argumen dari command line
-    parser = argparse.ArgumentParser(description="Evaluasi model yang sudah dilatih pada test set HIGGS.")
-    parser.add_argument(
-        '--model-path',
-        type=str,
-        required=True,
-        help="Path menuju file model .keras yang akan dievaluasi (contoh: models/higgs_1_layer_raw_full_best.keras)."
-    )
-    parser.add_argument(
-        '--feature-set',
-        type=str,
-        required=True,
-        choices=['all', 'raw', 'only'],
-        help="Set fitur yang digunakan untuk melatih model ini."
-    )
+    parser = argparse.ArgumentParser(description="Evaluasi model PyTorch pada dataset HIGGS.")
+    parser.add_argument('--config', type=str, required=True, help="Path menuju file konfigurasi YAML dari model yang akan dievaluasi.")
     args = parser.parse_args()
-
-    # Memulai proses evaluasi
-    evaluate_model(model_path=Path(args.model_path), feature_set=args.feature_set)
+    evaluate_model(config_path=Path(args.config))
 

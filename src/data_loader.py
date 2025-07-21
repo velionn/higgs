@@ -39,7 +39,7 @@ def get_dataloaders(config: dict):
     
     if feature_set == 'raw':
         features = RAW_FEATURES
-    elif feature_set == 'only':
+    elif feature_set == 'high':
         features = HIGH_LEVEL_FEATURES
     else: # 'all'
         features = RAW_FEATURES + HIGH_LEVEL_FEATURES
