@@ -1,15 +1,15 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'only'
+  feature_set: 'high'           # Menggunakan semua 28 fitur
 
 # --- Pengaturan Model ---
 model:
-  name: 'higgs_4_layer_only_features'
-  layers: 4
+  name: 'higgs_1_layer_high_features'
+  layers: 1                    # 1 hidden layer
   neurons: 300
   activation: 'relu'
-  input_shape_factor: 7
+  input_shape_factor: 7       # HARUS 28 karena feature_set adalah 'all'
 
 # --- Pengaturan Pelatihan ---
 training:
