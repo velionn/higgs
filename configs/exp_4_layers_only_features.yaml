@@ -13,8 +13,7 @@ model:
 
 # --- Pengaturan Pelatihan ---
 training:
-  optimizer: 'adam'
-  loss: 'binary_crossentropy'
+  learning_rate: 0.001 # Learning rate yang umum untuk Adam
   epochs: 100
   batch_size: 2048
   early_stopping_patience: 10

@@ -1,10 +1,7 @@
-# configs/exp_1_layer_only_features.yaml
-# Menggunakan 1 hidden layer dan fitur tingkat tinggi (only).
-
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'only'          # Menggunakan 7 fitur tingkat tinggi
+  feature_set: 'only'           # Menggunakan semua 28 fitur
 
 # --- Pengaturan Model ---
 model:
@@ -12,12 +9,11 @@ model:
   layers: 1                    # 1 hidden layer
   neurons: 300
   activation: 'relu'
-  input_shape_factor: 7        # HARUS 7 karena feature_set adalah 'only'
+  input_shape_factor: 7       # HARUS 28 karena feature_set adalah 'all'
 
 # --- Pengaturan Pelatihan ---
 training:
-  optimizer: 'adam'
-  loss: 'binary_crossentropy'
+  learning_rate: 0.001 # Learning rate yang umum untuk Adam
   epochs: 100
   batch_size: 2048
   early_stopping_patience: 10

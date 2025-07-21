@@ -1,0 +1,21 @@
+# --- Pengaturan Data ---
+data:
+  file_path: 'data/raw/HIGGS.csv'
+  feature_set: 'raw'
+  num_train_samples: 100000
+  num_valid_samples: 20000
+
+# --- Pengaturan Model ---
+model:
+  name: 'higgs_pytorch_testing'
+  layers: 2
+  neurons: 128
+  input_shape_factor: 21
+
+# --- Pengaturan Pelatihan ---
+training:
+  learning_rate: 0.001 # Learning rate yang umum untuk Adam
+  epochs: 5            # 5 epoch sudah cukup untuk tes
+  batch_size: 512
+  early_stopping_patience: 3
+

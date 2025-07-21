@@ -1,24 +1,21 @@
-# configs/exp_1_layer_raw_features.yaml
-# Menggunakan 1 hidden layer dan fitur mentah (raw).
-
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'raw'           # Menggunakan 21 fitur mentah sesuai permintaan
+  feature_set: 'raw'           # Menggunakan semua 28 fitur
 
 # --- Pengaturan Model ---
 model:
   name: 'higgs_1_layer_raw_features'
-  layers: 1                    # 1 hidden layer sesuai permintaan
-  neurons: 300                 # 300 neuron, nilai yang wajar untuk baseline
+  layers: 1                    # 1 hidden layer
+  neurons: 300
   activation: 'relu'
-  input_shape_factor: 21       # HARUS 21 karena feature_set adalah 'raw'
+  input_shape_factor: 21       # HARUS 28 karena feature_set adalah 'all'
 
 # --- Pengaturan Pelatihan ---
 training:
-  optimizer: 'adam'
-  loss: 'binary_crossentropy'
-  epochs: 100                  # Biarkan EarlyStopping yang menentukan kapan harus berhenti
-  batch_size: 2048             # Kita bisa gunakan batch size lebih besar di GPU ini
+  learning_rate: 0.001 # Learning rate yang umum untuk Adam
+  epochs: 100
+  batch_size: 2048
   early_stopping_patience: 10
+
 

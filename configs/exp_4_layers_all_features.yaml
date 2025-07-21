@@ -1,6 +1,3 @@
-# configs/exp_4_layers_all_features.yaml
-# Konfigurasi untuk eksperimen dengan 4 hidden layer, menggunakan semua fitur.
-
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
@@ -16,8 +13,7 @@ model:
 
 # --- Pengaturan Pelatihan ---
 training:
-  optimizer: 'adam'
-  loss: 'binary_crossentropy'
+  learning_rate: 0.001 # Learning rate yang umum untuk Adam
   epochs: 100 # Jumlah maksimum epoch
   batch_size: 1024 # Ukuran batch, bisa disesuaikan dengan VRAM GPU Anda
   early_stopping_patience: 10 # Berhenti jika tidak ada peningkatan setelah 10 epoch
