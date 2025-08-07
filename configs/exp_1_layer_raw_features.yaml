@@ -1,19 +1,18 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'raw'           # Menggunakan semua 28 fitur
+  feature_set: 'raw'
 
 # --- Pengaturan Model ---
 model:
   name: 'higgs_1_layer_raw_features'
-  layers: 1                    # 1 hidden layer
-  neurons: 300
-  activation: 'relu'
-  input_shape_factor: 21       # HARUS 28 karena feature_set adalah 'all'
+  hidden_layer_nodes: [300]
+  input_shape_factor: 21
 
 # --- Pengaturan Pelatihan ---
 training:
-  learning_rate: 0.001 # Learning rate yang umum untuk Adam
+  learning_rate: 0.001
+  # wieght_decay: 0.0001
   epochs: 100
   batch_size: 2048
   early_stopping_patience: 10

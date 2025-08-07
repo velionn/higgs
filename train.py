@@ -21,11 +21,7 @@ def train_model(config_path: Path):
     model_config = config['model']
     training_config = config['training']
     
-    model = HiggsNet(
-        input_size=model_config['input_shape_factor'],
-        hidden_layers=model_config['layers'],
-        hidden_neurons=model_config['neurons']
-    ).to(device)
+    model = HiggsNet(model_config).to(device)
     
     print("Arsitektur Model:")
     print(model)

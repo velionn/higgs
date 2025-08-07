@@ -6,14 +6,13 @@ data:
 # --- Pengaturan Model ---
 model:
   name: 'higgs_4_layer_high_features'
-  layers: 4
-  neurons: 300
-  activation: 'relu'
+  hidden_layer_nodes: [512, 256, 128, 64]
   input_shape_factor: 7
 
 # --- Pengaturan Pelatihan ---
 training:
-  learning_rate: 0.001 # Learning rate yang umum untuk Adam
+  learning_rate: 0.001
+  # wieght_decay: 0.0001
   epochs: 100
   batch_size: 2048
   early_stopping_patience: 10

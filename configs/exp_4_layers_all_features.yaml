@@ -1,20 +1,19 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'all' # Pilihan: all, raw, only
+  feature_set: 'all'
 
 # --- Pengaturan Model ---
 model:
-  name: 'higgs_4_layer_all_features' # Nama untuk menyimpan model
-  layers: 4 # Jumlah hidden layer
-  neurons: 300 # Jumlah neuron di setiap hidden layer
-  activation: 'relu' # Fungsi aktivasi untuk hidden layer
-  input_shape_factor: 28 # Jumlah fitur input (28 untuk 'all', 21 untuk 'raw', 7 untuk 'only')
+  name: 'higgs_4_layer_all_features'
+  hidden_layer_nodes: [512, 256, 128, 64]
+  input_shape_factor: 28
 
 # --- Pengaturan Pelatihan ---
 training:
-  learning_rate: 0.001 # Learning rate yang umum untuk Adam
-  epochs: 100 # Jumlah maksimum epoch
-  batch_size: 1024 # Ukuran batch, bisa disesuaikan dengan VRAM GPU Anda
-  early_stopping_patience: 10 # Berhenti jika tidak ada peningkatan setelah 10 epoch
+  learning_rate: 0.001
+  # wieght_decay: 0.0001
+  epochs: 100
+  batch_size: 1024
+  early_stopping_patience: 10
 

@@ -7,8 +7,8 @@ data:
 
 # --- Pengaturan Model ---
 model:
-  name: 'higgs_pytorch_pyramid_testing'
-  hidden_layer_nodes: [128, 64]
+  name: 'higgs_pytorch_testing'
+  hidden_layer_nodes: [128, 128]
   input_shape_factor: 21
 
 # --- Pengaturan Pelatihan ---

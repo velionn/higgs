@@ -24,11 +24,7 @@ def evaluate_model(config_path: Path):
     model_config = config['model']
     
     # Buat instance model dengan arsitektur yang sama
-    model = HiggsNet(
-        input_size=model_config['input_shape_factor'],
-        hidden_layers=model_config['layers'],
-        hidden_neurons=model_config['neurons']
-    ).to(device)
+    model = HiggsNet(model_config).to(device)
 
     # Tentukan path ke model yang disimpan
     model_save_path = Path('models') / f"{model_config['name']}_best.pt"
