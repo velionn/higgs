@@ -13,7 +13,7 @@ model:
 training:
   learning_rate: 0.001
   # wieght_decay: 0.0001
-  epochs: 100
-  batch_size: 2048
-  early_stopping_patience: 10
+  epochs: 200
+  batch_size: 8192
+  early_stopping_patience: 15
 
