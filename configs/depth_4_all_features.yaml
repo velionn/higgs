@@ -5,7 +5,7 @@ data:
 
 # --- Pengaturan Model ---
 model:
-  name: 'higgs_4_layer_all_features'
+  name: 'depth_4_all_features'
   hidden_layer_nodes: [512, 256, 128, 64]
   input_shape_factor: 28
 

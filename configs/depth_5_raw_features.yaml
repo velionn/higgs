@@ -1,13 +1,13 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'high'
+  feature_set: 'raw'
 
 # --- Pengaturan Model ---
 model:
-  name: 'depth_4_high_features'
-  hidden_layer_nodes: [512, 256, 128, 64]
-  input_shape_factor: 7
+  name: 'depth_5_raw_features'
+  hidden_layer_nodes: [1024, 512, 256, 128, 64]
+  input_shape_factor: 21
 
 # --- Pengaturan Pelatihan ---
 training:
