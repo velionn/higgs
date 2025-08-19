@@ -12,7 +12,7 @@ model:
 # --- Pengaturan Pelatihan ---
 training:
   learning_rate: 0.001
-  # wieght_decay: 0.0001
+  wieght_decay: 0.0001
   epochs: 200
   batch_size: 8192
   early_stopping_patience: 15
