@@ -1,18 +1,18 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'high'
+  feature_set: 'raw'
 
 # --- Pengaturan Model ---
 model:
-  name: 'depth_1_high_features'
-  hidden_layer_nodes: [300]
-  input_shape_factor: 7
+  name: 'layers4_pyramid512_lr0001_wd00001_raw'
+  hidden_layer_nodes: [512, 256, 128, 64]
+  input_shape_factor: 21
 
 # --- Pengaturan Pelatihan ---
 training:
   learning_rate: 0.001
-  # wieght_decay: 0.0001
+  wieght_decay: 0.0001
   epochs: 200
   batch_size: 8192
   early_stopping_patience: 15

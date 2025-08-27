@@ -5,7 +5,7 @@ data:
 
 # --- Pengaturan Model ---
 model:
-  name: 'depth_4_high_features'
+  name: 'layers4_pyramid512_lr0001_wd00001_high'
   hidden_layer_nodes: [512, 256, 128, 64]
   input_shape_factor: 7
 

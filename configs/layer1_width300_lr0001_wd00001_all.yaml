@@ -5,8 +5,8 @@ data:
 
 # --- Pengaturan Model ---
 model:
-  name: 'depth_5_all_features'
-  hidden_layer_nodes: [1024, 512, 256, 128, 64]
+  name: 'layer1_width300_lr0001_wd000001_all'
+  hidden_layer_nodes: [300]
   input_shape_factor: 28
 
 # --- Pengaturan Pelatihan ---
@@ -16,5 +16,4 @@ training:
   epochs: 200
   batch_size: 8192
   early_stopping_patience: 15
-
 
