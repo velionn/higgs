@@ -1,13 +1,13 @@
 # --- Pengaturan Data ---
 data:
   file_path: 'data/raw/HIGGS.csv'
-  feature_set: 'raw'
+  feature_set: 'all'
 
 # --- Pengaturan Model ---
 model:
-  name: 'depth_4_raw_features'
+  name: 'layers4_pyramid512_lr0001_wd00001_all'
   hidden_layer_nodes: [512, 256, 128, 64]
-  input_shape_factor: 21
+  input_shape_factor: 28
 
 # --- Pengaturan Pelatihan ---
 training:
