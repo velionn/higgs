@@ -1,0 +1,19 @@
+# --- Pengaturan Data ---
+data:
+  file_path: 'data/raw/HIGGS.csv'
+  feature_set: 'raw'
+
+# --- Pengaturan Model ---
+model:
+  name: 'layers4_width300_lr0001_wd00001_raw'
+  hidden_layer_nodes: [300, 300, 300, 300]
+  input_shape_factor: 21
+
+# --- Pengaturan Pelatihan ---
+training:
+  learning_rate: 0.001
+  wieght_decay: 0.0001
+  epochs: 200
+  batch_size: 8192
+  early_stopping_patience: 15
+
