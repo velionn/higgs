@@ -7,7 +7,7 @@ This project is a modern reimplementation of the research paper "Searching for E
 
 * Baldi, P., Sadowski, P. & Whiteson, D. Searching for exotic particles in high-energy physics with deep learning. Nat Commun 5, 4308 (2014).
 * **Datasets:** [UCI Machine Learning Repository: HIGGS Data Set](https://archive.ics.uci.edu/dataset/280/higgs)
-* **Original Repository:** [uci-lhc/higgs-susy](https://github.com/uci-lhc/higgs-susy)
+* **Original Repository:** [uci-igb/higgs-susy](https://github.com/uci-igb/higgs-susy)
 
 ## Project Structure
 
@@ -67,17 +67,8 @@ pip install -r requirements.txt
 
 Training is executed using the `train.py` script, which requires a configuration file as an argument. All experiment configurations are defined in the `configs/` folder.
 
-* **Command Syntax:**
-
 ```bash
-python train.py --config [PATH_KE_FILE_CONFIG]
-```
-
-* **Example:**
-To train a 4-layer with all features, run:
-
-```bash
-python train.py --config configs/layers4_width300_lr0001_wd00001_all.yaml
+python train.py --config [PATH_TO_CONFIG_FILE]
 ```
 
 The best performing model will be automatically saved in the `models/` folder.
@@ -86,18 +77,10 @@ The best performing model will be automatically saved in the `models/` folder.
 
 After a model has been trained, you can evaluate its final performance on the test set using `evaluate.py`. This script uses the same configuration file that was uset for training
 
-* **Command Syntax:**
-
 ```bash
 python evaluate.py --config [PATH_TO_CONFIG_FILE]
 ```
 
-* **Example:**
-To evaluate the model you just trained above, run:
-
-```bash
-python evaluate.py --config configs/layers4_width300_lr0001_wd00001_all.yaml
-```
 The evaluation result (AUC, accuracy, loss) will be printed to the terminal and saved to a `.json` file in the `result/metrisc/` folder
 
 <!-- end list -->
