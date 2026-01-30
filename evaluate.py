@@ -9,7 +9,6 @@ from src.data_loader import get_dataloaders
 from src.model_builder import HiggsNet
 
 def evaluate_model(config_path: Path):
-    # --- 1. Memuat Konfigurasi & Menentukan Perangkat ---
     print(f"Memuat konfigurasi dari: {config_path}")
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
@@ -17,16 +16,12 @@ def evaluate_model(config_path: Path):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Menggunakan perangkat: {device}")
 
-    # --- 2. Memuat Data Uji ---
     _, _, test_loader = get_dataloaders(config)
 
-    # --- 3. Membangun Ulang Model dan Memuat Bobot (Weights) ---
     model_config = config['model']
     
-    # Buat instance model dengan arsitektur yang sama
     model = HiggsNet(model_config).to(device)
 
-    # Tentukan path ke model yang disimpan
     model_save_path = Path('models') / f"{model_config['name']}_best.pt"
     if not model_save_path.exists():
         print(f"Error: File model tidak ditemukan di {model_save_path}")
@@ -35,15 +30,14 @@ def evaluate_model(config_path: Path):
     print(f"Memuat bobot model dari: {model_save_path}")
     model.load_state_dict(torch.load(model_save_path, map_location=device))
     
-    # --- 4. Mengevaluasi Model ---
     criterion = nn.BCEWithLogitsLoss()
     auc_metric = BinaryAUROC().to(device)
     acc_metric = BinaryAccuracy().to(device)
     
-    model.eval() # Set model ke mode evaluasi
+    model.eval() 
     test_loss = 0.0
     
-    with torch.no_grad(): # Tidak perlu menghitung gradien saat evaluasi
+    with torch.no_grad():
         for features, labels in test_loader:
             features, labels = features.to(device), labels.to(device)
             
@@ -51,7 +45,6 @@ def evaluate_model(config_path: Path):
             loss = criterion(outputs, labels)
             test_loss += loss.item()
             
-            # Update metrik
             auc_metric.update(outputs, labels.int())
             acc_metric.update(outputs, labels.int())
 
@@ -71,7 +64,6 @@ def evaluate_model(config_path: Path):
     print(f"  AUC (Area Under Curve): {metrics['auc']:.4f}")
     print("-----------------------------------------")
 
-    # --- 5. Menyimpan Hasil ---
     results_dir = Path('results/metrics')
     results_dir.mkdir(parents=True, exist_ok=True)
     

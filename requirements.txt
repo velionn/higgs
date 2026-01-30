@@ -1,9 +1,7 @@
-# Pustaka dasar
 pandas
 numpy
 scikit-learn
 matplotlib
 PyYAML
 
-# Pustaka untuk metrik
 torchmetrics
