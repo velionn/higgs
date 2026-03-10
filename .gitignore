@@ -1,10 +1,10 @@
-env/
+venv/
 /venv/
 
-ata/
+data/
 /data/
 
-odels/
+models/
 /models/
 
 results/
@@ -24,3 +24,5 @@ Thumbs.db
 .idea/
 
 .ipynb_checkpoints/
+notebooks/
+/notebooks/
